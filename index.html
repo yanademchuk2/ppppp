@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сортування списку</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #list-container { margin-top: 20px; }
+        ul { list-style: none; padding: 0; }
+        li { cursor: pointer; padding: 5px; border: 1px solid #ddd; margin: 5px 0; }
+        button { margin-left: 5px; }
+    </style>
 </head>
 <body>
-<script src="script.js"></script>
+    <h2>Динамічний список</h2>
+    <input type="text" id="item-input" placeholder="Введіть значення">
+    <button id="add-btn">Додати</button>
+    <button id="sort-btn">Сортувати</button>
+
+    <div id="list-container">
+        <ul id="item-list"></ul>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
