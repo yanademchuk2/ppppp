@@ -1,43 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("item-input");
-    const addBtn = document.getElementById("add-btn");
-    const sortBtn = document.getElementById("sort-btn");
-    const list = document.getElementById("item-list");
+document.addEventListener("DOMContentLoaded", function() {
+  var fetchBtn = document.getElementById("fetchUsersBtn");
+  var loadCacheBtn = document.getElementById("loadCacheBtn");
 
-    let items = JSON.parse(localStorage.getItem("items")) || [];
 
-    function updateList() {
-        list.innerHTML = "";
-        items.forEach((item, index) => {
-            const li = document.createElement("li");
-            li.textContent = item;
-            li.addEventListener("click", () => removeItem(index));
-            list.appendChild(li);
-        });
+  fetchBtn.addEventListener("click", fetchUsers);
 
-        localStorage.setItem("items", JSON.stringify(items));
-    }
-
-    addBtn.addEventListener("click", function () {
-        const newItem = input.value.trim();
-        if (newItem) {
-            items.push(newItem);
-            input.value = "";
-            updateList();
-        } else {
-            alert("Введіть значення!");
-        }
-    });
-
-    function removeItem(index) {
-        items.splice(index, 1);
-        updateList();
-    }
-
-    sortBtn.addEventListener("click", function () {
-        items.sort((a, b) => a.localeCompare(b, "uk"));
-        updateList();
-    });
-
-    updateList();
+  loadCacheBtn.addEventListener("click", loadCachedData);
 });
+
+async function fetchUsers() {
+  try {
+
+    const response = await fetch("https://reqres.in/api/users");
+    if (!response.ok) {
+      throw new Error("HTTP помилка: " + response.status);
+    }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.data)) {
+      throw new Error("Помилкова структура JSON");
+    }
+
+    var users = data.data.filter(function(user) {
+      return user.first_name && user.last_name;
+    });
+
+    if (users.length === 0) {
+      throw new Error("Дані не містять коректних користувачів");
+    }
+
+    renderUsers(users);
+
+    localStorage.setItem("users", JSON.stringify(users));
+    sessionStorage.setItem("users", JSON.stringify(users));
+
+    document.querySelector(".error-message").textContent = "";
+  } catch (error) {
+
+    document.querySelector(".error-message").textContent = "Помилка: " + error.message;
+  }
+}
+
+function renderUsers(users) {
+  var userList = document.querySelector(".user-list");
+  userList.innerHTML = "";
+  users.forEach(function(user) {
+    var li = document.createElement("li");
+    li.textContent = user.first_name + " " + user.last_name;
+    userList.appendChild(li);
+  });
+}
+
+function loadCachedData() {
+  var cachedUsers = localStorage.getItem("users");
+  if (cachedUsers) {
+
+    renderUsers(JSON.parse(cachedUsers));
+  } else {
+    document.querySelector(".error-message").textContent = "Немає кешованих даних.";
+  }
+}

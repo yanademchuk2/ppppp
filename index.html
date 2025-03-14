@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сортування списку</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        #list-container { margin-top: 20px; }
-        ul { list-style: none; padding: 0; }
-        li { cursor: pointer; padding: 5px; border: 1px solid #ddd; margin: 5px 0; }
-        button { margin-left: 5px; }
-    </style>
+    <title>Список користувачів</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Динамічний список</h2>
-    <input type="text" id="item-input" placeholder="Введіть значення">
-    <button id="add-btn">Додати</button>
-    <button id="sort-btn">Сортувати</button>
 
-    <div id="list-container">
-        <ul id="item-list"></ul>
+    <div class="container">
+        <h1>Список користувачів</h1>
+        <div class="buttons">
+            <button id="fetchUsersBtn">Завантажити користувачів</button>
+            <button id="loadCacheBtn">Завантажити кешовані дані</button>
+        </div>
+        <ul class="user-list"></ul>
+        <p class="error-message"></p>
     </div>
 
     <script src="script.js"></script>
